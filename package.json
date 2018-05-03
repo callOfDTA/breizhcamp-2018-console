@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "node index.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/clementRenazeau/breizhcamp-2018-console/issues"
   },
-  "homepage": "https://github.com/clementRenazeau/breizhcamp-2018-console#readme"
+  "homepage": "https://github.com/clementRenazeau/breizhcamp-2018-console#readme",
+  "dependencies": {
+    "request": "^2.85.0"
+  }
 }
