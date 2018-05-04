@@ -8,7 +8,15 @@ exports.init = function (callback) {
 request('http://www.breizhcamp.org/json/talks.json', { json: true }, function(err, res, body) {
     if (err) { return console.log('Erreur', err); }
     talks = body;
-    callback(talks.length-1)
+
+        request('http://www.breizhcamp.org/json/others.json', { json: true }, function(err, res, body) {
+        if (err) { return console.log('Erreur', err); }
+        talks = talks.concat(body);
+        callback(talks.length)
+    });
 });
 
+};
+exports.listerSessions= function(){
+    return talks;
 };
