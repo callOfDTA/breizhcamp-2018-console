@@ -4,7 +4,7 @@ var request = require('request')
 var talks = [];
 
 exports.init = function (callback) {
-
+    talks = [];
     request('http://www.breizhcamp.org/json/talks.json', { json: true }, function(err, res, body) {
         if (err) { return console.log('Erreur', err); }
         talks = talks.concat(body);
@@ -19,3 +19,7 @@ exports.init = function (callback) {
         });
     });
 };
+
+exports.listerSessions = function(callback){
+    callback(talks);
+}
