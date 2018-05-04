@@ -41,12 +41,17 @@ exports.start = function() {
         
         talks.forEach(function(value){
                 console.log("* " + value.name, "(" + value.speakers + ")");
-            });
-            menu();    
+        });
+        menu();    
     }
 
     function listerLesPresentateurs(){
-        service.listerLesPresentateurs();      
+        var presentateurs = service.listerPresentateurs(); 
+        
+        presentateurs.forEach(function(value){
+            console.log(value);
+        });
+
         menu();    
     }
 };

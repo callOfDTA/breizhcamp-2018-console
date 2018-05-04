@@ -1,5 +1,6 @@
 // tableau qui contiendra toutes les sessions du BreizhCamp
 var talks = [];
+var presentateurs = [];
 var jsdom = require('jsdom');
 
 exports.init = function (callback) {
@@ -19,16 +20,19 @@ exports.listerSessions = function() {
     return talks;
 };
 
-exports.listerLesPresentateurs = function() {
-    var request = require('request');
+var request = require('request');
     request('http://www.breizhcamp.org/conference/speakers/', {}, function(err, res, body) {
         if (err) { return console.log('Erreur', err); }
 
         var dom = new jsdom.JSDOM(body);
 
-        var presentateurs = dom.window.document.querySelectorAll('.media-heading');
-        presentateurs.forEach(function(lg) {
-            console.log(lg.innerHTML);
+        speakers = dom.window.document.querySelectorAll('.media-heading');      
+    
+        speakers.forEach(function(lg) {
+            presentateurs = presentateurs.concat(lg.innerHTML);
         });
     });
+
+exports.listerPresentateurs = function() {   
+    return presentateurs;
 };
