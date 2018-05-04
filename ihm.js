@@ -10,12 +10,12 @@ var rl = readline.createInterface({
 exports.start = function() {
     service.init(function(nb) {
         console.log('[init]', nb, 'sessions trouvées.');
+        menu();
     });
-    menu();
 };
 
 function menu(){
-    rl.question('***************************\n 1. Rafraichir les données\n 2. Lister les sessions\n 99. Quitter ', function(saisie) {
+    rl.question('***************************\n 1. Rafraichir les données\n 2. Lister les sessions\n 3. Lister les présentateurs\n 99. Quitter\n ', function(saisie) {
         switch(saisie){
             case '1' :
                 service.init(function(nb) {
@@ -34,6 +34,15 @@ function menu(){
                 menu();
                 break;
 
+            case '3':
+                service.listerPresentateur(function(tab) {
+                    tab.forEach(function(element) {
+                        console.log(element.innerHTML);
+                    })
+                });
+                menu();
+                break;
+
             case '99' :
                 rl.close();
                 break;
@@ -41,6 +50,7 @@ function menu(){
             default :
                 console.log('mauvais choix');
                 menu();
+                break;
         }
     });
 }

@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/JulienGazzola/breizhcamp-2018-console#readme",
   "dependencies": {
+    "jsdom": "^11.10.0",
     "request": "^2.85.0"
   }
 }
