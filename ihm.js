@@ -1,7 +1,7 @@
-var service = require('./service');
-var readline = require('readline');
+const service = require('./service');
+const readline = require('readline');
 
-var rl = readline.createInterface({
+let rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
@@ -17,7 +17,7 @@ exports.start = function() {
             2. Lister les sessions
             3. Lister les présentateurs 
             99. Quitter
-            saisie: `, function(saisie) {     
+            saisie: `, saisie => {     
             if(saisie == 1){
                 rafraichirDonnees();
             
@@ -37,24 +37,29 @@ exports.start = function() {
     }
 
     function rafraichirDonnees(){
-        service.init(function(callback) {
+        /*service.init(callback => {
             console.log('[init]', callback, `... Données mises à jour`);
             menu();
-        });
+        });*/
+
+        service.init().then(nb => {
+            console.log('[init]', nb, `... Données mises à jour`);
+            menu();
+        })
     }
 
     function listerLesSessions(){
-        var talks = service.listerSessions();
+        let talks = service.listerSessions();
         
-        talks.forEach(function(value){
-                console.log("* " + value.name, "(" + value.speakers + ")");
+        talks.forEach(value =>{
+                console.log("*", value.name,"(",value.speakers,")");
             });
             menu();    
     }
     function listerLesSpeakers(){
-        var speakers = service.listerLesSpeakers();
+        let speakers = service.listerLesSpeakers();
         
-        speakers.forEach(function(value){
+        speakers.forEach(value =>{
             console.log(value);
             });
             menu();    

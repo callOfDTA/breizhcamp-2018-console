@@ -1,4 +1,4 @@
-var request = require('request');
+let request = require('request');
 
 request('http://www.breizhcamp.org/conference/speakers/', {}, function(err, res, body) {
     if (err) { return console.log('Erreur', err); }

@@ -1,11 +1,11 @@
-var jsdom = require('jsdom');
+let jsdom = require('jsdom');
 
 // récupération de la page HTML exemple
-var fs = require('fs');
-var pageHTML = fs.readFileSync('./prototype/unePage.html').toString();
+let fs = require('fs');
+let pageHTML = fs.readFileSync('./prototype/unePage.html').toString();
 
-var dom = new jsdom.JSDOM(pageHTML);
-var langs = dom.window.document.querySelectorAll("li");
+let dom = new jsdom.JSDOM(pageHTML);
+let langs = dom.window.document.querySelectorAll("li");
 langs.forEach(function(lg) {
     console.log(lg.innerHTML);
 });
