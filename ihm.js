@@ -15,7 +15,7 @@ exports.start = function() {
 };
 
 function menu(){
-    rl.question('***************************\n 1. Rafraichir les données\n 2. Lister les sessions\n 3. Lister les présentateurs\n 99. Quitter\n ', function(saisie) {
+    rl.question('***************************\n 1. Rafraichir les données\n 2. Lister les sessions\n 3. Lister les présentateurs\n 4.Rechercher une session\n 99. Quitter\n ', function(saisie) {
         switch(saisie){
             case '1' :
                 service.init(function(nb) {
@@ -40,6 +40,10 @@ function menu(){
                         console.log(element.innerHTML);
                     })
                 });
+                menu();
+                break;
+
+            case '4':
                 menu();
                 break;
 
