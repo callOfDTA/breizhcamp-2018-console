@@ -3,7 +3,7 @@ var talks = [];
 
 exports.init = function(callback) {
   var request = require("request");
-
+  talks = []
   request(
     "http://www.breizhcamp.org/json/others.json",
     { json: true },
@@ -31,11 +31,8 @@ exports.init = function(callback) {
       );
     }
   );
+};
 
-  
-  // TODO effectuer les requêtes HTTP permettant de récupérer les données du BreizhCamp
-
-  // TODO     => une fois les données récupérées, alimenter la variable talks
-
-  // TODO         => invoquer la callback avec le nombre de sessions récupérées
+exports.listerSessions = function(callback){
+    callback(talks)
 };
