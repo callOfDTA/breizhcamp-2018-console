@@ -5,7 +5,15 @@ exports.init = function (callback) {
 
    var request = require('request');
    request('http://www.breizhcamp.org/json/talks.json', { json: true}, function (error, response, body) {
-    talks = body
-    callback(talks.length-1);
-   });   
+        talks = body;
+        request('http://www.breizhcamp.org/json/others.json', { json: true}, function (error, response, body) {
+            talks = talks.concat(body);
+            callback(talks.length);
+        
+        });
+   });    
+};
+
+exports.listerSessions = function() {
+    return talks;
 };
