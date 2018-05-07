@@ -1,7 +1,9 @@
-let request = require('request');
-let jsdom = require('jsdom');
+import jsdom from 'jsdom';
+import request from 'request-promise-native';
 
-class Service {
+export default class Service {
+    talks: any[];
+    presentateurs: any[];
 
     constructor() {
         this.talks = [];
@@ -28,9 +30,7 @@ class Service {
                     });
                 }        
             });
-            
-
-            
+                     
             request('http://www.breizhcamp.org/conference/speakers/', {}, (error, response, body) => {
                 if(error) { 
                     reject(error);
@@ -39,23 +39,20 @@ class Service {
                     let dom = new jsdom.JSDOM(body);
                     let speakers = dom.window.document.querySelectorAll('.media-heading');          
                     speakers.forEach(lg => {
-                        this.presentateurs = this.presentateurs.concat(lg.innerHTML);
+                        this.presentateurs.push(lg.innerHTML);
                     });
                 } 
             });
         });
     }
 
-    listerSessions() {
+    listerSessions(): any {
         return this.talks;
     }
 
     
 
-    listerPresentateurs() {   
+    listerPresentateurs(): any {   
         return this.presentateurs;
     }
-
 }
-
-module.exports = Service;

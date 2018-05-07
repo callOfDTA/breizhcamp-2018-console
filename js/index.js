@@ -15,4 +15,3 @@ var index = /** @class */ (function () {
 }());
 console.log("** Application BreizhCamp 2018 **");
 var index1 = new index();
-index1.start();
