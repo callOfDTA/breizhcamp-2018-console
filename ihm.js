@@ -2,7 +2,7 @@ const service = require("./service");
 const readline = require("readline");
 
 class Ihm {
-  constructor(rl) {
+  constructor() {
     this.rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout
