@@ -1,40 +1,61 @@
-// tableau qui contiendra toutes les sessions du BreizhCamp
-let talks = [];
-let presentateurs = [];
-const jsdom = require('jsdom');
+let request = require('request');
+let jsdom = require('jsdom');
 
-exports.init = function(){  
-   return new Promise(function (resolve, reject) {
-    let request = require('request');
-    request('http://www.breizhcamp.org/json/talks.json', { json: true}, function (error, response, body) {               
-        if(error) { return console.log('Erreur', error);}
-            talks = body;         
-            request('http://www.breizhcamp.org/json/others.json', { json: true}, function (error, response, body) {
-                if(error) { return console.log('Erreur', error);}
-                talks = talks.concat(body);
-                resolve(talks.length); // en cas de succès                  
+class Service {
+
+    constructor() {
+        this.talks = [];
+        this.presentateurs = [];
+    }
+
+    init() {        
+        return new Promise((resolve, reject) => {
+            
+            request('http://www.breizhcamp.org/json/talks.json', { json: true}, (error, response, body) => {               
+                if(error) { 
+                    reject(error);
+                }
+                else {
+                    this.talks = body;
+                    request('http://www.breizhcamp.org/json/others.json', { json: true}, (error, response, body) => {
+                        if(error) { 
+                            reject(error);
+                        }
+                        else {
+                            this.talks = this.talks.concat(body);
+                            resolve(this.talks.length);
+                        }                                 
+                    });
+                }        
+            });
+            
+
+            
+            request('http://www.breizhcamp.org/conference/speakers/', {}, (error, response, body) => {
+                if(error) { 
+                    reject(error);
+                }
+                else {
+                    let dom = new jsdom.JSDOM(body);
+                    let speakers = dom.window.document.querySelectorAll('.media-heading');          
+                    speakers.forEach(lg => {
+                        this.presentateurs = this.presentateurs.concat(lg.innerHTML);
+                    });
+                } 
             });
         });
-    });   
-};
+    }
 
-exports.listerSessions = function() {
-    return talks;
-};
+    listerSessions() {
+        return this.talks;
+    }
 
-let request = require('request');
-    request('http://www.breizhcamp.org/conference/speakers/', {}, function(err, res, body) {
-        if (err) { return console.log('Erreur', err); }
+    
 
-        let dom = new jsdom.JSDOM(body);
+    listerPresentateurs() {   
+        return this.presentateurs;
+    }
 
-        speakers = dom.window.document.querySelectorAll('.media-heading');      
-  
-        speakers.forEach(lg => {
-            presentateurs = presentateurs.concat(lg.innerHTML);
-        });
-    });
+}
 
-exports.listerPresentateurs = function() {   
-    return presentateurs;
-};
+module.exports = Service;

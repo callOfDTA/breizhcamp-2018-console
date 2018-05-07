@@ -1,5 +1,11 @@
 const ihm = require('./ihm');
 
-console.log('** Application BreizhCamp 2018 **');
+class index {
+    constructor() {
+            console.log("** Application BreizhCamp 2018 **");
+            this.interface = new ihm();
+            this.interface.start();
+          }
+}
 
-ihm.start();
+let index1 = new index();
