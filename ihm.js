@@ -10,7 +10,7 @@ let Service = require('./service');
 
 let service = new Service();
 
-exports.start = function() {
+exports.start = () => {
     service.init()
     .then(length => console.log(`[init] ${length} sessions trouvées.`)
         , error => console.log(error))
