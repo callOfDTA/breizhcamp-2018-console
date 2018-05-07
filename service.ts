@@ -1,6 +1,8 @@
 import jsdom from 'jsdom';
 import rp from 'request-promise-native';
 import {Presentateur, Session} from './domains'
+import { resolve } from 'dns';
+import { rejects } from 'assert';
 
 
 // tableau qui contiendra toutes les sessions du BreizhCamp
@@ -49,9 +51,23 @@ export default class Service {
     listerSessions():Promise<Session[]> {
         return new Promise((resolve, reject) => {
             if (this.talks)
-                resolve(this.talks)
+                resolve(this.talks);
             else
-                reject(`Erreur`)
+                reject(`Erreur`);
+        })
+    }
+
+    rechercherSession(unMot:string):Promise<Session[]>{
+        let trouver : Session[] = [];
+        return new Promise((resolve,reject) =>{
+            this.talks.forEach((elem:Session) => {
+                if(elem.titre.toUpperCase().includes(unMot.toUpperCase()))
+                    trouver.push(elem)
+            });
+            if (trouver.length != 0 )
+                resolve (trouver);
+            else 
+                reject (`(aucune session)`);
         })
     }
 }

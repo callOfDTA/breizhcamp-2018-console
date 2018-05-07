@@ -17,7 +17,7 @@ const menu = () => {
     1. Rafraichir les données
     2. Lister les sessions
     3. Lister les présentateurs
-    4. Rehercher
+    4. Rechercher
     99. Quitter
     `,  (saisie:string) => {
             switch (saisie) {
@@ -43,9 +43,14 @@ const menu = () => {
                     break;
                 case "4":
                     rl.question(`Quel mot recherchez-vous ? :`, (s:string) => {
+                        service.rechercherSession(s).then((element:Session[]) => {
+                            element.forEach((elem:Session, index:number) => {
+                                console.log(`${index +1 } ${elem.titre}`)
+                            })
+                            menu()
+                        }).catch(err => console.log(err)).then((ele:any) => {menu()})
                         
                     })
-                    menu()
                     break;
                 case "99":
                     rl.close();

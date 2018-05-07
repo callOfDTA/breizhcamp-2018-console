@@ -1,7 +1,7 @@
 export class Session {
 
 
-    constructor(public description: string, public titre: string) {
+    constructor( public titre: string,public description: string) {
 
     }
    
