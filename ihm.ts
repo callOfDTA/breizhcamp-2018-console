@@ -21,6 +21,7 @@ export default class Ihm {
             1. Rafraichir les données
             2. Lister les sessions
             3. Lister les présentateurs
+            4. Rechercher une session
             99. Quitter`, saisie => {     
             if(saisie == '1'){
                 this.rafraichirDonnees();
@@ -33,7 +34,11 @@ export default class Ihm {
             else if(saisie == '3'){
                 this.listerLesPresentateurs();
             
-            }    
+            }
+            else if(saisie == '4'){
+                this.rechercherSession();
+            
+            }   
             else if(saisie == '99'){
                 this.r1.close();// attention, une fois l'interface fermée, la saisie n'est plus possible
             }
@@ -55,7 +60,7 @@ export default class Ihm {
         let talks = this.serv.listerSessions();
             
         talks.forEach(value => {
-                console.log(`* ${value.name} (${value.speakers})`);
+                console.log(`* ${value.nom} (${value.speaker})`);
         });
         this.menu();    
     }
@@ -64,7 +69,16 @@ export default class Ihm {
         let presentateurs = this.serv.listerPresentateurs(); 
             
         presentateurs.forEach(value => {
-            console.log(value);
+            console.log(value.presentateur);
+        });
+        this.menu();    
+    }
+
+    rechercherSession(){
+        let presentateurs = this.serv.listerPresentateurs(); 
+            
+        presentateurs.forEach(value => {
+            console.log(value.presentateur);
         });
         this.menu();    
     }

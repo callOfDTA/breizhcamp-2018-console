@@ -1,30 +1,36 @@
 import jsdom from 'jsdom';
 import request from 'request-promise-native';
+import { Session } from './domain';
+import { Presentateur } from './domain';
 
 export default class Service {
-    talks: any[];
-    presentateurs: any[];
+    talks: Session[];
+    presentateurs: Presentateur[];
 
     constructor() {
         this.talks = [];
         this.presentateurs = [];
     }
 
-    init() {        
-        return new Promise((resolve, reject) => {
-            
+    init() {  
+        this.talks = [];      
+        return new Promise((resolve, reject) => {       
             request('http://www.breizhcamp.org/json/talks.json', { json: true}, (error, response, body) => {               
                 if(error) { 
                     reject(error);
                 }
                 else {
-                    this.talks = body;
+                    body.forEach(element => {
+                        this.talks = this.talks.concat(new Session(element.name, element.speakers));
+                    });
                     request('http://www.breizhcamp.org/json/others.json', { json: true}, (error, response, body) => {
                         if(error) { 
                             reject(error);
                         }
                         else {
-                            this.talks = this.talks.concat(body);
+                            body.forEach(element => {
+                                this.talks = this.talks.concat(new Session(element.name, element.speakers));
+                            });
                             resolve(this.talks.length);
                         }                                 
                     });
@@ -39,20 +45,20 @@ export default class Service {
                     let dom = new jsdom.JSDOM(body);
                     let speakers = dom.window.document.querySelectorAll('.media-heading');          
                     speakers.forEach(lg => {
-                        this.presentateurs.push(lg.innerHTML);
+                        this.presentateurs.push(new Presentateur(lg.innerHTML));
                     });
                 } 
             });
         });
     }
 
-    listerSessions(): any {
+    listerSessions(): Session[] {
         return this.talks;
     }
 
     
 
-    listerPresentateurs(): any {   
+    listerPresentateurs(): Presentateur[] {   
         return this.presentateurs;
     }
 }
