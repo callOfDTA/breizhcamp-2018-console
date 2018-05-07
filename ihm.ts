@@ -19,7 +19,8 @@ export default class Ihm {
                   *************************
                   1. Rafraichir les données
                   2. Lister les sessions
-                  3. Lister les présentateurs 
+                  3. Lister les présentateurs
+                  4. Rechercher une session 
                   99. Quitter
                   saisie: `,
       saisie => {
@@ -29,6 +30,8 @@ export default class Ihm {
           this.listerLesSessions();
         } else if (saisie == "3") {
           this.listerLesSpeakers();
+        } else if (saisie == "4") {
+          this.rechercherSession();
         } else if (saisie == "99") {
           this.rl.close(); // attention, une fois l'interface fermée, la saisie n'est plus possible
         } else {
@@ -58,6 +61,21 @@ export default class Ihm {
       console.log(value.nom);
     });
     this.menu();
+  }
+  rechercherSession() {
+    this.rl.question(`Recherche: `, saisie => {
+      if (saisie != "99") {
+        let talks = this.serv.listerSessions();
+
+        let valeur = 0;
+        talks.filter(value => value.nom.includes(saisie)).forEach(value => {
+          valeur++;
+          console.log(valeur, value.nom);
+        });
+        this.rl.close();
+        this.menu();
+      }
+    });
   }
 }
 //module.exports = Ihm;
