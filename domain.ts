@@ -9,6 +9,4 @@ export class Session {
 
 export class Presentateur {
   constructor(public nom: string) {}
-
-  
 }

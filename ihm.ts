@@ -1,7 +1,6 @@
-import  readline from "readline";
+import readline from "readline";
 import Service from "./service";
-import {Session, Presentateur} from "./domain"
-
+import { Session, Presentateur } from "./domain";
 
 const service = new Service();
 const rl = readline.createInterface({
@@ -78,13 +77,56 @@ function menu() {
 
 function detailSession() {
   rl.question(`Quel mot recherchez-vous ? : `, (saisie: string) => {
-    service.chercherSessions(saisie).then((elem: any) => console.log(elem));
-
-    rl.question(
-      `98. Refaire une nouvelle recherche
-    99. Retour au menu principal
-    Votre choix : `,
-      s => {}
-    );
+    service
+      .chercherSessions(saisie)
+      .then((elem: Session[]) => {
+        elem.forEach((session: Session, index: number) => {
+          console.log(`      ${index + 1}. ${session.titre}`);
+        });
+        return elem;
+      })
+      .then((sessions: Session[]) => {
+        rl.question(
+          `      98. Refaire une nouvelle recherche
+      99. Retour au menu principal
+      Votre choix : `,
+          saisie2 => {
+            let option = Number(saisie2);
+            if (option > 0 && option <= sessions.length) {
+              console.log(`      *Titre* : ${sessions[option - 1].titre}
+              *Présentateurs* : ${sessions[option - 1].presentateurs}
+              
+              *Description* 
+              
+              ${sessions[option - 1].description}
+              
+              *Prérequis* :
+              
+              `);
+              menu();
+            } else {
+              switch (option) {
+                case 98:
+                  detailSession();
+                  break;
+                case 99:
+                  menu();
+                  break;
+                default:
+                  console.log("L'option choisi n'est pas valide.");
+                  detailSession();
+                  break;
+              }
+            }
+          }
+        );
+      })
+      .catch((err: string) => {
+        console.log(`        ${err}
+        98. Refaire une nouvelle recherche
+        99. Retour au menu principal
+        Votre choix : `);
+        detailSession();
+      });
   });
 }
