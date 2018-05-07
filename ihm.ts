@@ -1,14 +1,14 @@
-const service = require("./service");
-const readline = require("readline");
+//const readline = require("readline");
+import readline from "readline";
 
-class Ihm {
-  constructor() {
-    this.rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
-    this.serv = new service();
-  }
+import Service from "./service";
+
+export default class Ihm {
+  rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+  serv = new Service();
   start() {
     this.rafraichirDonnees();
     this.menu();
@@ -23,13 +23,13 @@ class Ihm {
                   99. Quitter
                   saisie: `,
       saisie => {
-        if (saisie == 1) {
+        if (saisie == "1") {
           this.rafraichirDonnees();
-        } else if (saisie == 2) {
+        } else if (saisie == "2") {
           this.listerLesSessions();
-        } else if (saisie == 3) {
+        } else if (saisie == "3") {
           this.listerLesSpeakers();
-        } else if (saisie == 99) {
+        } else if (saisie == "99") {
           this.rl.close(); // attention, une fois l'interface fermée, la saisie n'est plus possible
         } else {
           this.menu();
@@ -47,7 +47,7 @@ class Ihm {
     let talks = this.serv.listerSessions();
 
     talks.forEach(value => {
-      console.log("*", value.name, "(", value.speakers, ")");
+      console.log("*", value.nom, "(", value.speaker, ")");
     });
     this.menu();
   }
@@ -55,9 +55,9 @@ class Ihm {
     let speakers = this.serv.listerLesSpeakers();
 
     speakers.forEach(value => {
-      console.log(value);
+      console.log(value.nom);
     });
     this.menu();
   }
 }
-module.exports = Ihm;
+//module.exports = Ihm;

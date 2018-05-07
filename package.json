@@ -4,13 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "ts-node index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/jsdom": "^11.0.4",
+    "@types/node": "^10.0.4",
+    "@types/request-promise-native": "^1.0.14",
     "jsdom": "^11.10.0",
-    "request": "^2.85.0"
+    "request": "^2.85.0",
+    "ts-node": "^6.0.3",
+    "typescript": "^2.8.3"
   }
 }
