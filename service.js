@@ -1,42 +1,54 @@
-// tableau qui contiendra toutes les sessions du BreizhCamp
-var talks = [];
+const request = require('request');
+const jsdom = require('jsdom');
+const fs = require('fs');
 
-exports.init = function (callback) {
-    talks = [];
-    // TODO effectuer les requêtes HTTP permettant de récupérer les données du BreizhCamp
-    var request = require('request');
+module.exports = class Service {
 
-    request('http://www.breizhcamp.org/json/talks.json', { json: true }, function(err, res, body) {
-    if (err) { return console.log('Erreur', err); }
+    constructor() {
+        this.talks = [];
+    }
+    init() {
+        return new Promise((resolve, reject) => {
+            this.talks = [];
+            request('http://www.breizhcamp.org/json/talks.json', { json: true }, (err, res, body) => {
+                if (err) {
+                    reject(err);
+                }
+                this.talks = this.talks.concat(body);
 
-    // body contient les données récupérées
-    talks = talks.concat(body);
-    request('http://www.breizhcamp.org/json/others.json', { json: true }, function(err, res, body) {
-            if (err) { return console.log('Erreur', err); }
+                request('http://www.breizhcamp.org/json/others.json', { json: true }, (err, res, body) => {
+                    if (err) {
+                        reject(err);
+                    }
+                    this.talks = this.talks.concat(body);
 
-            // body contient les données récupérées
-            talks = talks.concat(body);
-            callback(talks.length);
+                    resolve(this.talks.length);
+                });
+            });
         });
-    });
-};
+    }
 
-exports.listerSessions = function(callback) {
-    callback(talks);
-}
+    listerSessions() {
+        return new Promise((resolve, reject) => {
+            if (this.talks){
+                resolve(this.talks);
+            } else {
+                reject(`talks empty`);
+            }
+        });
+    }
 
-exports.listerPresentateur = function(callback) {
-    var request = require('request');
-
-    request('http://www.breizhcamp.org/conference/speakers/', {}, function(err, res, body) {
-        if (err) { return console.log('Erreur', err); }
-
-        var jsdom = require('jsdom');
-        // récupération de la page HTML exemple
-        var fs = require('fs');
-
-        var dom = new jsdom.JSDOM(body);
-        var langs = dom.window.document.querySelectorAll('h3');
-        callback(langs);
-    });
+    listerPresentateur() {
+        return new Promise((resolve, reject) => {
+            request('http://www.breizhcamp.org/conference/speakers/', {}, (err, res, body) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    const dom = new jsdom.JSDOM(body);
+                    const langs = dom.window.document.querySelectorAll('h3');
+                    resolve(langs);
+                }
+            });
+        });
+    }
 }

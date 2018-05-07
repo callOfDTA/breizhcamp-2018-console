@@ -1,46 +1,54 @@
-var service = require('./service');
-var readline = require('readline');
 
-var rl = readline.createInterface({
+const readline = require('readline');
+
+const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
+let Service = require('./service');
+
+let service = new Service();
 
 exports.start = function() {
-    service.init(function(nb) {
-        console.log('[init]', nb, 'sessions trouvées.');
-        menu();
-    });
+    service.init()
+    .then(length => console.log(`[init] ${length} sessions trouvées.`)
+        , error => console.log(error))
+    .then(console.log(`Données mises à jour`))
+    .then(menu());
 };
 
 function menu(){
-    rl.question('***************************\n 1. Rafraichir les données\n 2. Lister les sessions\n 3. Lister les présentateurs\n 4.Rechercher une session\n 99. Quitter\n ', function(saisie) {
+    rl.question(`*********************************
+    1. Rafraichir les données
+    2. Lister les sessions
+    3. Lister les présentateurs
+    4. Rechercher une session
+    99. Quitter
+    `, (saisie) => {
         switch(saisie){
             case '1' :
-                service.init(function(nb) {
-                    console.log('[init]', nb, 'sessions trouvées.');
-                });
-                console.log("Données mises à jour");
-                menu();
+                service.init()
+                    .then(length => console.log(`[init] ${length} sessions trouvées.`)
+                        , error => console.log(error))
+                    .then(console.log(`Données mises à jour`))
+                    .then(() => menu());
                 break;
 
             case '2' :
-                service.listerSessions(function(tab){
-                    tab.forEach(function(element) {
-                        console.log(element.name, "(", element.speakers, ")");
-                      });
-                });
-                menu();
+                service.listerSessions()
+                    .then(talks => talks.forEach((element) => {
+                        console.log(`${element.name} (${element.speakers})`);
+                    }), error => console.log(error))
+                    .then(() => menu());
                 break;
 
             case '3':
-                service.listerPresentateur(function(tab) {
-                    tab.forEach(function(element) {
-                        console.log(element.innerHTML);
-                    })
-                });
-                menu();
+                service.listerPresentateur()
+                    .then(speakers => speakers.forEach((element) => {
+                        console.log(`${element.innerHTML}`);
+                    }), error => console.log(error))
+                    .then(() => menu());
                 break;
 
             case '4':
@@ -52,7 +60,7 @@ function menu(){
                 break;
             
             default :
-                console.log('mauvais choix');
+                console.log(`mauvais choix`);
                 menu();
                 break;
         }
