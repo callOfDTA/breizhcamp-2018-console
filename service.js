@@ -1,37 +1,41 @@
+const jsdom = require("jsdom");
+const fs = require("fs");
+const request = require("request");
 // tableau qui contiendra toutes les sessions du BreizhCamp
-var talks = [];
+module.exports = class Service{
+constructor(){let talks = [];}
 
-exports.init = function (callback) {
-    talks=[];
-    var request = require("request")
-    request("http://www.breizhcamp.org/json/talks.json", { json: true }, function(err, res, body){
-            if (err) { return console.log('Erreur', err);}
-            talks=talks.concat(body);
-            request("http://www.breizhcamp.org/json/others.json", { json: true }, function(err, res, body){
-                    if (err) { return console.log('Erreur', err); }
-                    talks=talks.concat(body);
-                    callback(talks.length);
+
+init(){
+        this.talks=[];
+        return new Promise((resolve, reject) => {
+                request("http://www.breizhcamp.org/json/talks.json", { json: true }, (err, res, body)=>{
+                        if (err){reject(err);}
+                        this.talks=this.talks.concat(body);
+                        request("http://www.breizhcamp.org/json/others.json", { json: true }, (err, res, body)=>{
+                                if (err){reject(err);}
+                                this.talks=this.talks.concat(body);
+                                resolve(this.talks.length);
+                        });     
                 });
         });
 };
 
-exports.listerSessions = function(callback){
-        callback(talks);
+listerSessions(){
+        return new Promise((resolve, reject) => {
+                if (this.talks){resolve(this.talks);}
+                else{reject(err);}
+                
+        });
 }
-exports.listerSpeakersByFirstnameAndName = function(callback){
-        var request = require("request")
-        request("http://www.breizhcamp.org/conference/speakers/", { json: true }, function(err, res, body){
-                if (err) { return console.log('Erreur', err);}  
-                var jsdom = require("jsdom");
-                var fs = require("fs");
-                var dom = new jsdom.JSDOM(body);
-                var langs = dom.window.document.querySelectorAll("h3");
-                /*
-                langs.forEach(function(lg) {
-                        console.log(lg.innerHTML);
+listerSpeakersByFirstnameAndName(){ 
+        return new Promise((resolve, reject) => {
+                request("http://www.breizhcamp.org/conference/speakers/", { json: true }, (err, res, body)=>{
+                        if (err){ reject(err);}
+                        const dom = new jsdom.JSDOM(body);
+                        const langs = dom.window.document.querySelectorAll("h3");
+                        resolve(langs);
                 });
-                */
-               callback(langs);
-
         });
 };
+}

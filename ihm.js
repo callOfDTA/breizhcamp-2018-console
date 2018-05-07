@@ -1,40 +1,44 @@
-var service = require('./service');
-var readline = require('readline');
-
-exports.start = function() {
-    service.init(function(nb) {
-        console.log("\n[init]', nb, 'sessions trouvées.");
+const Service = require('./service');
+const readline = require('readline');
+const service = new Service();
+exports.start = () =>{
+    service.init().then(nb =>{
+        console.log(`\n[init] ${nb} sessions trouvées.`);
         menu();
     });
    
 };
 
-var rl = readline.createInterface({
+const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 function menu(){
-    rl.question("***************************\n1. Rafraichir les données\n2. Lister les sessions\n3. Lister les présentateurs\n99. Quitter", function(saisie) {
+    rl.question(`****************************************
+    1. Rafraichir les données
+    2. Lister les sessions
+    3. Lister les présentateurs
+    99. Quitter`, saisie =>{
         switch(saisie){
             case '1' : 
-                service.init(function(nb){
-                    console.log('[init]', nb, 'sessions trouvées.');
+                service.init().then(nb =>{
+                    console.log(`\n[init] ${nb} sessions trouvées.`);
                 });
-                console.log("...Données mises à jour\n");
+                console.log(`...Données mises à jour\n`);
                 menu();
                 break;
             case '2' : 
-                service.listerSessions(function(tab){
-                    tab.forEach(function(element) {
-                        console.log(element.name, "(", element.speakers, ")");
+                service.listerSessions().then(tab=>{
+                    tab.forEach(element =>{
+                        console.log(`${element.name} (${element.speakers})`);
                     });
+                    menu();
                 });
-                menu();
                 break;
             case '3' :
-                service.listerSpeakersByFirstnameAndName(function(tab){
-                    tab.forEach(function(lg) {
-                        console.log(lg.innerHTML);
+                service.listerSpeakersByFirstnameAndName().then(tab=>{
+                    tab.forEach(lg =>{
+                        console.log(`${lg.innerHTML}`);
                     });
                     menu();
                 });
@@ -43,7 +47,7 @@ function menu(){
                 rl.close();
                 break;
             default : 
-                console.log("Veuillez saisir 1, 2, 3 ou 99 pou accéder aux services\n");
+                console.log(`Veuillez saisir 1, 2, 3 ou 99 pou accéder aux services\n`);
                 menu();
                 break;
         }

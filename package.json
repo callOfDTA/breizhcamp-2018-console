@@ -20,6 +20,7 @@
   "homepage": "https://github.com/clementRenazeau/breizhcamp-2018-console#readme",
   "dependencies": {
     "jsdom": "^11.10.0",
-    "request": "^2.85.0"
+    "request": "^2.85.0",
+    "request-promise-native": "^1.0.5"
   }
 }
