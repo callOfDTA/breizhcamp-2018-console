@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "ts-node index.ts"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,13 @@
   },
   "homepage": "https://github.com/ZahourMehdi/breizhcamp-2018-console#readme",
   "dependencies": {
-    "request": "^2.85.0"
+    "@types/jsdom": "^11.0.4",
+    "@types/node": "^10.0.4",
+    "@types/request-promise-native": "^1.0.14",
+    "jsdom": "^11.10.0",
+    "request": "^2.85.0",
+    "request-promise-native": "^1.0.5",
+    "ts-node": "^6.0.3",
+    "typescript": "^2.8.3"
   }
 }
