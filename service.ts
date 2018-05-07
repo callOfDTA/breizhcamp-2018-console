@@ -56,8 +56,6 @@ export default class Service {
         return this.talks;
     }
 
-    
-
     listerPresentateurs(): Presentateur[] {   
         return this.presentateurs;
     }

@@ -75,11 +75,18 @@ export default class Ihm {
     }
 
     rechercherSession(){
-        let presentateurs = this.serv.listerPresentateurs(); 
-            
-        presentateurs.forEach(value => {
-            console.log(value.presentateur);
+        let talks = this.serv.listerSessions();
+
+        var nb = 0;
+        this.r1.question(
+            `Quel mot recherchez-vous ?`, saisie => {     
+                talks.filter(value => value.nom.includes(saisie)).forEach(element => {
+                    nb++;
+                    console.log(nb, element.nom);
+                })
+             
         });
+        
         this.menu();    
     }
 }
