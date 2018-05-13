@@ -1,0 +1,30 @@
+{
+  "name": "breizhcamp-2018-console",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexisVernay/breizhcamp-2018-console.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexisVernay/breizhcamp-2018-console/issues"
+  },
+  "homepage": "https://github.com/AlexisVernay/breizhcamp-2018-console#readme",
+  "dependencies": {
+    "@types/jsdom": "^11.0.4",
+    "@types/node": "^10.0.4",
+    "@types/request-promise-native": "^1.0.14",
+    "jsdom": "^11.10.0",
+    "request": "^2.85.0",
+    "ts-node": "^6.0.3",
+    "typescript": "^2.8.3"
+  }
+}
