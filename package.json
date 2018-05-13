@@ -1,0 +1,25 @@
+{
+  "name": "breizhcamp-2018-console",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FabienScolan/breizhcamp-2018-console.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FabienScolan/breizhcamp-2018-console/issues"
+  },
+  "homepage": "https://github.com/FabienScolan/breizhcamp-2018-console#readme",
+  "dependencies": {
+    "jsdom": "^11.10.0",
+    "request": "^2.85.0"
+  }
+}
